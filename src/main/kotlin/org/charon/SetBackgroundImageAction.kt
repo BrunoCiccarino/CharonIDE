@@ -4,10 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.EditorSettings
 import javax.swing.ImageIcon
 import java.awt.FileDialog
 import java.awt.Frame
@@ -43,6 +40,7 @@ class SetBackgroundImageAction : AnAction() {
 
                 // Add the new background panel
                 val backgroundPanel = BackgroundPanel(image)
+                backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
                 editorComponent.add(backgroundPanel)
                 editorComponent.revalidate()
                 editorComponent.repaint()
@@ -54,3 +52,4 @@ class SetBackgroundImageAction : AnAction() {
         }
     }
 }
+
