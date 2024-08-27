@@ -7,12 +7,15 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.editor.EditorFactory
 import javax.swing.ImageIcon
 import javax.swing.JFileChooser
-import org.charon.BackgroundPanel
+import javax.swing.JLayeredPane
+import org.charon.RemoveBackgroundImageAction
 
 class SetBackgroundImageAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
+
+        RemoveBackgroundImageAction().actionPerformed(e)
 
         val fileChooser = JFileChooser()
         fileChooser.dialogTitle = "Select Background Image"
@@ -24,19 +27,33 @@ class SetBackgroundImageAction : AnAction() {
                 val imageIcon = ImageIcon(file.absolutePath)
                 val image = imageIcon.image
 
-                val editor = EditorFactory.getInstance().allEditors.firstOrNull() ?: return
-                val editorComponent = editor.component
-
-                editorComponent.components.filterIsInstance<BackgroundPanel>().forEach {
-                    editorComponent.remove(it)
+                val editors = EditorFactory.getInstance().allEditors
+                if (editors.isEmpty()) {
+                    Messages.showMessageDialog("No open editors found.", "Error", Messages.getErrorIcon())
+                    return
                 }
 
-                val backgroundPanel = BackgroundPanel(image)
-                backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
-                editorComponent.add(backgroundPanel)
-                editorComponent.layout = null
-                editorComponent.revalidate()
-                editorComponent.repaint()
+                for (editor in editors) {
+                    val editorComponent = editor.component
+
+                    editorComponent.components
+                        .filterIsInstance<BackgroundPanel>()
+                        .forEach { panel ->
+                            editorComponent.remove(panel)
+                        }
+
+                    val backgroundPanel = BackgroundPanel(image)
+                    backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
+
+                    val layeredPane = JLayeredPane()
+                    layeredPane.setBounds(0, 0, editorComponent.width, editorComponent.height)
+                    layeredPane.add(backgroundPanel, JLayeredPane.PALETTE_LAYER)
+
+                    editorComponent.add(layeredPane)
+                    editorComponent.layout = null
+                    editorComponent.revalidate()
+                    editorComponent.repaint()
+                }
 
                 Messages.showMessageDialog("Background image updated!", "Success", Messages.getInformationIcon())
             } else {

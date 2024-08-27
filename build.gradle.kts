@@ -11,18 +11,17 @@ repositories {
     mavenCentral()
 }
 
-// Configure Gradle IntelliJ Plugin
+
 intellij {
     version.set("2023.2.6")
-    type.set("IC") // Target IDE Platform
-    // Configure additional plugins if needed
-    plugins.set(listOf(/* Plugin Dependencies */))
+    type.set("IC")
+    plugins.set(listOf())
 }
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "17" // Use String for Java version
-        targetCompatibility = "17" // Use String for Java version
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
