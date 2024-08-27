@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.EditorFactory
 import javax.swing.ImageIcon
 import javax.swing.JFileChooser
 import javax.swing.JLayeredPane
+import org.charon.SetTransparentBackgroundAction
 import java.awt.Color
 
 class SetBackgroundImageAction : AnAction() {
@@ -16,7 +17,7 @@ class SetBackgroundImageAction : AnAction() {
         val project: Project = e.project ?: return
 
 
-        RemoveBackgroundImageAction().actionPerformed(e)
+        SetTransparentBackgroundAction().actionPerformed(e)
 
         val fileChooser = JFileChooser()
         fileChooser.dialogTitle = "Select Background Image"
