@@ -27,10 +27,11 @@ class RemoveBackgroundImageAction : AnAction() {
                 }
 
             val transparentPanel = JPanel()
-            transparentPanel.background = Color(0, 0, 0, 0)
+
             transparentPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
 
             editorComponent.add(transparentPanel)
+            editorComponent.background = Color(255, 255, 255, 128)
             editorComponent.revalidate()
             editorComponent.repaint()
         }

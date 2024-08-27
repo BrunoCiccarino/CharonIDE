@@ -8,12 +8,13 @@ import com.intellij.openapi.editor.EditorFactory
 import javax.swing.ImageIcon
 import javax.swing.JFileChooser
 import javax.swing.JLayeredPane
-import org.charon.RemoveBackgroundImageAction
+import java.awt.Color
 
 class SetBackgroundImageAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
+
 
         RemoveBackgroundImageAction().actionPerformed(e)
 
@@ -36,18 +37,21 @@ class SetBackgroundImageAction : AnAction() {
                 for (editor in editors) {
                     val editorComponent = editor.component
 
+
                     editorComponent.components
                         .filterIsInstance<BackgroundPanel>()
                         .forEach { panel ->
                             editorComponent.remove(panel)
                         }
 
+
                     val backgroundPanel = BackgroundPanel(image)
                     backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
 
                     val layeredPane = JLayeredPane()
                     layeredPane.setBounds(0, 0, editorComponent.width, editorComponent.height)
-                    layeredPane.add(backgroundPanel, JLayeredPane.PALETTE_LAYER)
+                    layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER)
+
 
                     editorComponent.add(layeredPane)
                     editorComponent.layout = null

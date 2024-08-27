@@ -15,5 +15,6 @@ class BackgroundPanel(private val backgroundImage: Image) : JPanel() {
         super.paintComponent(g)
         val g2d = g as Graphics2D
         g2d.drawImage(backgroundImage, 0, 0, width, height, this)
+
     }
 }
