@@ -7,7 +7,7 @@
                 class="org.charon.SetBackgroundImageAction"
                 text="Set Background Image"
                 description="Sets the background image for the editor">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt B"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift B"/>
         </action>
     </actions>
     <description><![CDATA[
@@ -15,5 +15,11 @@
     ]]></description>
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
+
+        <applicationService serviceImplementation="org.charon.BackgroundImageSettings"/>
+        <projectService serviceImplementation="org.charon.BackgroundImageInitializer"
+                        serviceInterface="com.intellij.openapi.startup.ProjectActivity"/>
+        />
+
     </extensions>
 </idea-plugin>

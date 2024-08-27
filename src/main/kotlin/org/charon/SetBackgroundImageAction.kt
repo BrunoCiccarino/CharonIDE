@@ -8,14 +8,12 @@ import com.intellij.openapi.editor.EditorFactory
 import javax.swing.ImageIcon
 import javax.swing.JFileChooser
 import javax.swing.JLayeredPane
-import org.charon.SetTransparentBackgroundAction
 import java.awt.Color
 
 class SetBackgroundImageAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project: Project = e.project ?: return
-
 
         SetTransparentBackgroundAction().actionPerformed(e)
 
@@ -26,44 +24,50 @@ class SetBackgroundImageAction : AnAction() {
         if (result == JFileChooser.APPROVE_OPTION) {
             val file = fileChooser.selectedFile
             if (file.exists()) {
-                val imageIcon = ImageIcon(file.absolutePath)
+                val imagePath = file.absolutePath
+                val imageIcon = ImageIcon(imagePath)
                 val image = imageIcon.image
 
-                val editors = EditorFactory.getInstance().allEditors
-                if (editors.isEmpty()) {
-                    Messages.showMessageDialog("No open editors found.", "Error", Messages.getErrorIcon())
-                    return
+
+                com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
+                    val editors = EditorFactory.getInstance().allEditors
+                    if (editors.isEmpty()) {
+                        Messages.showMessageDialog("No open editors found.", "Error", Messages.getErrorIcon())
+                        return@invokeLater
+                    }
+
+                    for (editor in editors) {
+                        val editorComponent = editor.component
+
+
+                        editorComponent.components
+                            .filterIsInstance<BackgroundPanel>()
+                            .forEach { panel ->
+                                editorComponent.remove(panel)
+                            }
+
+
+                        val backgroundPanel = BackgroundPanel(image)
+                        backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
+
+                        editorComponent.add(backgroundPanel)
+                        editorComponent.revalidate()
+                        editorComponent.repaint()
+                    }
+
+
+                    val settings = BackgroundImageSettings.getInstance()
+                    settings?.let {
+                        it.state.backgroundImagePath = imagePath
+                        Messages.showMessageDialog("Background image updated!", "Success", Messages.getInformationIcon())
+                    } ?: run {
+                        Messages.showMessageDialog("Failed to get BackgroundImageSettings instance.", "Error", Messages.getErrorIcon())
+                    }
                 }
-
-                for (editor in editors) {
-                    val editorComponent = editor.component
-
-
-                    editorComponent.components
-                        .filterIsInstance<BackgroundPanel>()
-                        .forEach { panel ->
-                            editorComponent.remove(panel)
-                        }
-
-
-                    val backgroundPanel = BackgroundPanel(image)
-                    backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
-
-                    val layeredPane = JLayeredPane()
-                    layeredPane.setBounds(0, 0, editorComponent.width, editorComponent.height)
-                    layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER)
-
-
-                    editorComponent.add(layeredPane)
-                    editorComponent.layout = null
-                    editorComponent.revalidate()
-                    editorComponent.repaint()
-                }
-
-                Messages.showMessageDialog("Background image updated!", "Success", Messages.getInformationIcon())
             } else {
                 Messages.showMessageDialog("Image file not found: ${file.absolutePath}", "Error", Messages.getErrorIcon())
             }
         }
     }
 }
+
