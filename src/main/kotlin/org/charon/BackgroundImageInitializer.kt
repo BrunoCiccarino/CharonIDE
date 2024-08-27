@@ -2,17 +2,17 @@ package org.charon
 
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.event.EditorFactoryEvent
-import com.intellij.openapi.editor.event.EditorFactoryListener
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.util.messages.MessageBusConnection
 import javax.swing.ImageIcon
 import javax.swing.JLayeredPane
+import java.awt.Component
 import java.awt.Image
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
 
 class BackgroundImageInitializer : ProjectActivity {
 
@@ -20,6 +20,7 @@ class BackgroundImageInitializer : ProjectActivity {
         com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
             applyBackgroundToAllOpenEditors(project)
         }
+
 
         val connection = project.messageBus.connect()
         connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
@@ -47,20 +48,34 @@ class BackgroundImageInitializer : ProjectActivity {
     private fun applyBackground(editor: Editor, image: Image) {
         val editorComponent = editor.component
 
-        com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
-            editorComponent.components
-                .filterIsInstance<BackgroundPanel>()
-                .forEach { panel ->
-                    editorComponent.remove(panel)
-                }
-
-            val backgroundPanel = BackgroundPanel(image)
-            backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
-
-            editorComponent.add(backgroundPanel)
-            editorComponent.revalidate()
-            editorComponent.repaint()
+        val layeredPane = editorComponent.components
+            .filterIsInstance<JLayeredPane>()
+            .firstOrNull() ?: JLayeredPane().apply {
+            setBounds(0, 0, editorComponent.width, editorComponent.height)
+            editorComponent.add(this)
         }
+
+
+        layeredPane.components
+            .filterIsInstance<BackgroundPanel>()
+            .forEach { panel ->
+                layeredPane.remove(panel)
+            }
+
+
+        val backgroundPanel = BackgroundPanel(image).apply {
+            setBounds(0, 0, editorComponent.width, editorComponent.height)
+            addComponentListener(object : java.awt.event.ComponentAdapter() {
+                override fun componentResized(e: ComponentEvent) {
+                    updateSize(editorComponent.width, editorComponent.height)
+                }
+            })
+        }
+        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER)
+
+
+        editorComponent.layout = null
+        editorComponent.revalidate()
+        editorComponent.repaint()
     }
 }
-

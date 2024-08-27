@@ -28,7 +28,6 @@ class SetBackgroundImageAction : AnAction() {
                 val imageIcon = ImageIcon(imagePath)
                 val image = imageIcon.image
 
-
                 com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
                     val editors = EditorFactory.getInstance().allEditors
                     if (editors.isEmpty()) {
@@ -48,7 +47,7 @@ class SetBackgroundImageAction : AnAction() {
 
 
                         val backgroundPanel = BackgroundPanel(image)
-                        backgroundPanel.setBounds(0, 0, editorComponent.width, editorComponent.height)
+                        backgroundPanel.updateSize(editorComponent.width, editorComponent.height)
 
                         editorComponent.add(backgroundPanel)
                         editorComponent.revalidate()
@@ -70,4 +69,3 @@ class SetBackgroundImageAction : AnAction() {
         }
     }
 }
-
