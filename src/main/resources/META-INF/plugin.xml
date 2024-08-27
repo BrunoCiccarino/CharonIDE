@@ -7,7 +7,7 @@
                 class="org.charon.SetBackgroundImageAction"
                 text="Set Background Image"
                 description="Sets the background image for the editor">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift B"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt B"/>
         </action>
     </actions>
     <description><![CDATA[

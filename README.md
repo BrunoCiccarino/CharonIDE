@@ -13,3 +13,27 @@ Use the keyboard shortcut Ctrl + Shift + B to open the file manager and select t
 * IDE integration: 
 
 The plugin is perfectly integrated with JetBrains IDEs, making customization of the development environment simple and intuitive.
+
+## How to use
+
+* click the gear button in the top right corner
+
+<img src="./img/howto1.jpg">
+
+* Right after clicking the gear button, click on the field written settings.
+
+<img src="./img/howto2.jpg">
+
+* In settings, click on keymap and then in plugins.
+
+<img src="./img/howto3.jpg">
+
+* Then click on CharonIDE and set background image
+
+<img src="./img/howto4.jpg">
+
+* Afterwards, a confirmation screen will appear, click ok.
+
+<img src="./img/howto6.jpg">
+
+and then just press the keyboard shortcut ctrl + shift + B which will open a screen where you can select a background image for your ide.
