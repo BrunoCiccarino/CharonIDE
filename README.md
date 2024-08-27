@@ -6,8 +6,9 @@ CharonIDE is a plugin for the JetBrains IDEs made based on the vstudio plugin <a
 
 Features
 * Choosing Background Image: 
+<img src="./img/image.png">
 
-Use the keyboard shortcut Ctrl + Alt + B to open the file manager and select the image you want to set as the editor's background.
+Use the keyboard shortcut Ctrl + Shift + B to open the file manager and select the image you want to set as the editor's background.
 
 * IDE integration: 
 

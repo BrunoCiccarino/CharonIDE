@@ -11,8 +11,7 @@
         </action>
     </actions>
     <description><![CDATA[
-        Enter short description for your plugin here.<br>
-        <em>most HTML tags may be used</em>
+        CharonIDE is a plugin for the JetBrains IDEs that allows users to customize the appearance of the editor by setting a custom background image.<br>
     ]]></description>
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
