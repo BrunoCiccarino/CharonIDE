@@ -1,4 +1,4 @@
-## CharonIDE
+## CharonIDE [![Contributions welcome][contributions-welcome-svg]][contributions-welcome]
 
 <img src="./img/logo.jpg">
 

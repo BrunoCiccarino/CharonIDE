@@ -3,8 +3,8 @@
     <name>CharonIDE</name>
     <vendor email="ciccabr9@gmail.com" url="https://github.com/BrunoCiccarino">BrunoCiccarino</vendor>
     <actions>
-        <action id="SetBackgroundImageAction"
-                class="org.charon.SetBackgroundImageAction"
+        <action id="ToggleBackgroundAction"
+                class="org.charon.ToggleBackgroundAction"
                 text="Set Background Image"
                 description="Sets the background image for the editor">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift B"/>

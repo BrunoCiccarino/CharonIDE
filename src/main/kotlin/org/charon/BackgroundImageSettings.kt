@@ -21,12 +21,27 @@ class BackgroundImageSettings : PersistentStateComponent<BackgroundImageSettings
     }
 
     data class State(
-        var backgroundImagePath: String? = null
+        var selectedBackgroundIndex: Int = 0
     )
 
     companion object {
+        private val availableBackgrounds = arrayOf(
+            "/backgrounds/bg1.png",
+            "/backgrounds/bg2.png",
+            "/backgrounds/bg3.png"
+        )
+
         fun getInstance(): BackgroundImageSettings {
             return com.intellij.openapi.components.ServiceManager.getService(BackgroundImageSettings::class.java)
         }
+
+        fun getBackgroundImagePath(index: Int): String {
+            return availableBackgrounds.getOrNull(index) ?: availableBackgrounds.first()
+        }
+
+        fun getNextBackgroundIndex(currentIndex: Int): Int {
+            return (currentIndex + 1) % availableBackgrounds.size
+        }
     }
 }
+

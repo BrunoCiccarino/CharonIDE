@@ -7,7 +7,6 @@ import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
-import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.ImageIcon
 import javax.swing.JLayeredPane
 import java.awt.Image
@@ -26,20 +25,13 @@ class BackgroundImageInitializer : ProjectActivity {
                     applyBackgroundToAllOpenEditors(event.manager.project)
                 }
             }
-
-            override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
-                com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
-                    applyBackgroundToAllOpenEditors(source.project)
-                }
-            }
         })
     }
 
     private fun applyBackgroundToAllOpenEditors(project: Project) {
         val settings = BackgroundImageSettings.getInstance()
-        val imagePath = settings.state.backgroundImagePath ?: return
-
-        val imageIcon = ImageIcon(imagePath)
+        val imagePath = settings.state.selectedBackgroundIndex.let { BackgroundImageSettings.getBackgroundImagePath(it) }
+        val imageIcon = ImageIcon(javaClass.getResource(imagePath))
         val image = imageIcon.image
 
         val editors = EditorFactory.getInstance().allEditors
@@ -76,9 +68,8 @@ class BackgroundImageInitializer : ProjectActivity {
         }
         layeredPane.add(backgroundPanel, Integer.valueOf(JLayeredPane.FRAME_CONTENT_LAYER - 1))
 
-
-
         layeredPane.revalidate()
         layeredPane.repaint()
     }
 }
+
