@@ -48,3 +48,10 @@ That said, there's a bunch of ways you can contribute to this project, like by:
 * 🚨 Sharing this project and recommending it to your friends
 * ✏️ Or you can contribute code by following this <a href="./docs/CONTRIBUTING.md">guide.</a>
 
+## Contributors
+
+This project exists thanks to all the people who contribute.
+
+<a href="https://github.com/BrunoCiccarino/CharonIDE/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=BrunoCiccarino/CharonIDE&max=24" />
+</a>
