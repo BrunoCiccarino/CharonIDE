@@ -9,10 +9,7 @@ import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.ImageIcon
 import javax.swing.JLayeredPane
-import java.awt.Component
 import java.awt.Image
-import java.awt.event.ComponentAdapter
-import java.awt.event.ComponentEvent
 
 class BackgroundImageInitializer : ProjectActivity {
 
@@ -20,7 +17,6 @@ class BackgroundImageInitializer : ProjectActivity {
         com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
             applyBackgroundToAllOpenEditors(project)
         }
-
 
         val connection = project.messageBus.connect()
         connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
@@ -53,8 +49,9 @@ class BackgroundImageInitializer : ProjectActivity {
             .firstOrNull() ?: JLayeredPane().apply {
             setBounds(0, 0, editorComponent.width, editorComponent.height)
             editorComponent.add(this)
+            editorComponent.revalidate()
+            editorComponent.repaint()
         }
-
 
         layeredPane.components
             .filterIsInstance<BackgroundPanel>()
@@ -62,20 +59,19 @@ class BackgroundImageInitializer : ProjectActivity {
                 layeredPane.remove(panel)
             }
 
-
         val backgroundPanel = BackgroundPanel(image).apply {
             setBounds(0, 0, editorComponent.width, editorComponent.height)
             addComponentListener(object : java.awt.event.ComponentAdapter() {
-                override fun componentResized(e: ComponentEvent) {
+                override fun componentResized(e: java.awt.event.ComponentEvent) {
                     updateSize(editorComponent.width, editorComponent.height)
                 }
             })
         }
+
         layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER)
 
-
-        editorComponent.layout = null
-        editorComponent.revalidate()
-        editorComponent.repaint()
+        // Ensure the layered pane and editor component are updated correctly
+        layeredPane.revalidate()
+        layeredPane.repaint()
     }
 }

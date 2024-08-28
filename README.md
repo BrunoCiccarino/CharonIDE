@@ -37,3 +37,13 @@ The plugin is perfectly integrated with JetBrains IDEs, making customization of 
 <img src="./img/howto6.jpg">
 
 and then just press the keyboard shortcut ctrl + shift + B which will open a screen where you can select a background image for your ide.
+
+## Contributing
+
+That said, there's a bunch of ways you can contribute to this project, like by:
+
+* ⭐ Giving a star on this repository (this is very important and costs nothing)
+* 🪲 Reporting a bug
+* 📄 Improving this documentation
+* 🚨 Sharing this project and recommending it to your friends
+* ✏️ Or you can contribute code by following this <a href="./docs/CONTRIBUTING.md">guide.</a>

@@ -23,7 +23,6 @@ class SetTransparentBackgroundAction : AnAction() {
 
             setTransparency(editorComponent, 0.5f)
 
-
             editorComponent.revalidate()
             editorComponent.repaint()
         }
@@ -31,11 +30,9 @@ class SetTransparentBackgroundAction : AnAction() {
     }
 
     private fun setTransparency(component: JComponent, opacity: Float) {
-
         val bgColor = Color(0, 0, 0, (255 * opacity).toInt())
         component.background = bgColor
         component.isOpaque = false
-
 
         for (child in component.components) {
             if (child is JComponent) {
