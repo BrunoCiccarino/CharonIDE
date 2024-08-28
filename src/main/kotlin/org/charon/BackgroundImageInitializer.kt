@@ -3,6 +3,7 @@ package org.charon
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
@@ -20,9 +21,15 @@ class BackgroundImageInitializer : ProjectActivity {
 
         val connection = project.messageBus.connect()
         connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
-            override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
+            override fun selectionChanged(event: FileEditorManagerEvent) {
                 com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
-                    applyBackgroundToAllOpenEditors(project)
+                    applyBackgroundToAllOpenEditors(event.manager.project)
+                }
+            }
+
+            override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
+                com.intellij.openapi.application.ApplicationManager.getApplication().invokeLater {
+                    applyBackgroundToAllOpenEditors(source.project)
                 }
             }
         })
@@ -67,10 +74,10 @@ class BackgroundImageInitializer : ProjectActivity {
                 }
             })
         }
+        layeredPane.add(backgroundPanel, Integer.valueOf(JLayeredPane.FRAME_CONTENT_LAYER - 1))
 
-        layeredPane.add(backgroundPanel, JLayeredPane.DEFAULT_LAYER)
 
-        // Ensure the layered pane and editor component are updated correctly
+
         layeredPane.revalidate()
         layeredPane.repaint()
     }

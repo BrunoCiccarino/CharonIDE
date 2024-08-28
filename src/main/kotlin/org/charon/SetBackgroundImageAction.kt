@@ -7,8 +7,6 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.editor.EditorFactory
 import javax.swing.ImageIcon
 import javax.swing.JFileChooser
-import javax.swing.JLayeredPane
-import java.awt.Color
 
 class SetBackgroundImageAction : AnAction() {
 

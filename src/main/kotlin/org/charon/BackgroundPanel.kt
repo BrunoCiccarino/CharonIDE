@@ -20,6 +20,7 @@ class BackgroundPanel(private val backgroundImage: Image) : JPanel() {
     }
     fun updateSize(width: Int, height: Int) {
         setBounds(0, 0, width, height)
+        revalidate()
         repaint()
     }
 }
