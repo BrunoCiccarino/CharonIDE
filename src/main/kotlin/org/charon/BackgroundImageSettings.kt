@@ -26,9 +26,9 @@ class BackgroundImageSettings : PersistentStateComponent<BackgroundImageSettings
 
     companion object {
         private val availableBackgrounds = arrayOf(
-            "/backgrounds/bg1.png",
-            "/backgrounds/bg2.png",
-            "/backgrounds/bg3.png"
+            "/resources/backgrounds/bg1.png",
+            "/resources/backgrounds/bg2.png",
+            "/resources/backgrounds/bg3.png"
         )
 
         fun getInstance(): BackgroundImageSettings {

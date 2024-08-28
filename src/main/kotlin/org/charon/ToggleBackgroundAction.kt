@@ -12,7 +12,6 @@ class ToggleBackgroundAction : AnAction() {
         val settings = BackgroundImageSettings.getInstance()
         var currentIndex = settings.state.selectedBackgroundIndex
 
-        // Se for a primeira vez, defina o plano de fundo inicial
         if (currentIndex == -1) {
             currentIndex = 0
             settings.state.selectedBackgroundIndex = currentIndex
